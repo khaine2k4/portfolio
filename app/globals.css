@@ -57,11 +57,30 @@ body {
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: nameSheen 4.5s linear infinite;
+  filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5))
+          drop-shadow(0 0 60px rgba(34, 211, 238, 0.25));
 }
 
 @keyframes nameSheen {
   0% { background-position: 160% 0; }
   100% { background-position: -60% 0; }
+}
+
+/* ---------- Rotating gradient ring (avatar) ---------- */
+.ring-glow {
+  background: conic-gradient(
+    from 0deg,
+    #a78bfa,
+    #22d3ee,
+    #f0abfc,
+    #818cf8,
+    #a78bfa
+  );
+  animation: spinRing 6s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.55));
+}
+@keyframes spinRing {
+  to { transform: rotate(360deg); }
 }
 
 /* ---------- Glow ---------- */
@@ -106,6 +125,17 @@ body {
   background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 60%, transparent 100%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 60%, transparent 100%);
+}
+
+/* ---------- Grid that lights up around the cursor ---------- */
+.bg-grid-spot {
+  background-image:
+    linear-gradient(to right, rgba(167, 139, 250, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(167, 139, 250, 0.35) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 70%);
+  mask-image: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 70%);
+  transition: opacity 0.3s ease;
 }
 
 /* ---------- Subtle noise overlay ---------- */

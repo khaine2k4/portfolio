@@ -68,11 +68,16 @@ export default function Hero() {
   function handleMove(e: React.MouseEvent<HTMLElement>) {
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
-    mx.set(e.clientX - rect.left);
-    my.set(e.clientY - rect.top);
+    const lx = e.clientX - rect.left;
+    const ly = e.clientY - rect.top;
+    mx.set(lx);
+    my.set(ly);
+    // Cursor position as % for the grid spotlight.
+    ref.current!.style.setProperty("--mx", `${(lx / rect.width) * 100}%`);
+    ref.current!.style.setProperty("--my", `${(ly / rect.height) * 100}%`);
     // Normalised -0.5..0.5 → degrees of tilt.
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    const px = lx / rect.width - 0.5;
+    const py = ly / rect.height - 0.5;
     tiltY.set(px * 16);
     tiltX.set(-py * 12);
   }
@@ -93,11 +98,16 @@ export default function Hero() {
       {/* Aurora that follows cursor + grid */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="bg-grid absolute inset-0" />
+        {/* Brighter grid that glows around the cursor */}
+        <div className="bg-grid-spot absolute inset-0" />
+        {/* Light that follows the cursor */}
         <motion.div style={{ x: sx, y: sy }} className="absolute left-0 top-0">
-          <div className="h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/25 blur-[120px]" />
+          <div className="h-[60vh] w-[60vh] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/35 blur-[120px]" />
+          <div className="h-[40vh] w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 blur-[110px]" />
         </motion.div>
-        <div className="absolute right-1/4 top-1/3 h-80 w-80 animate-blob rounded-full bg-cyan-500/20 blur-3xl [animation-delay:4s]" />
-        <div className="absolute bottom-1/4 left-1/3 h-80 w-80 animate-blob rounded-full bg-fuchsia-600/20 blur-3xl [animation-delay:8s]" />
+        <div className="absolute right-[18%] top-1/4 h-96 w-96 animate-blob rounded-full bg-cyan-500/30 blur-3xl [animation-delay:4s]" />
+        <div className="absolute bottom-1/4 left-[18%] h-96 w-96 animate-blob rounded-full bg-fuchsia-600/30 blur-3xl [animation-delay:8s]" />
+        <div className="absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 animate-blob rounded-full bg-indigo-500/20 blur-3xl [animation-delay:2s]" />
       </div>
 
       <motion.div
@@ -202,7 +212,6 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        style={{ opacity: contentOpacity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-500 transition-colors hover:text-white"
         aria-label="Cuộn xuống"
       >

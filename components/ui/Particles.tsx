@@ -49,6 +49,16 @@ export default function Particles() {
         if (p.x < 0 || p.x > w) p.vx *= -1;
         if (p.y < 0 || p.y > h) p.vy *= -1;
 
+        // Cursor repulsion — particles gently swirl away from the pointer.
+        const rdx = p.x - mouse.x;
+        const rdy = p.y - mouse.y;
+        const rdist = Math.hypot(rdx, rdy);
+        if (rdist < 150 && rdist > 0.01) {
+          const force = (1 - rdist / 150) * 1.1;
+          p.x += (rdx / rdist) * force;
+          p.y += (rdy / rdist) * force;
+        }
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(196, 181, 253, ${p.a})`;
@@ -74,12 +84,12 @@ export default function Particles() {
         const mdx = p.x - mouse.x;
         const mdy = p.y - mouse.y;
         const mdist = Math.hypot(mdx, mdy);
-        if (mdist < 160) {
+        if (mdist < 190) {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(34, 211, 238, ${0.25 * (1 - mdist / 160)})`;
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = `rgba(34, 211, 238, ${0.32 * (1 - mdist / 190)})`;
+          ctx.lineWidth = 1.2;
           ctx.stroke();
         }
       }
@@ -98,7 +108,7 @@ export default function Particles() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-60"
+      className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-70"
     />
   );
 }
