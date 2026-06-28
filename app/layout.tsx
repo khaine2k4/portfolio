@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { site } from "@/data/site";
@@ -7,6 +7,7 @@ import CursorGlow from "@/components/ui/CursorGlow";
 import Particles from "@/components/ui/Particles";
 import Preloader from "@/components/ui/Preloader";
 import AmbientBackground from "@/components/ui/AmbientBackground";
+import BackToTop from "@/components/ui/BackToTop";
 import { LanguageProvider } from "@/lib/i18n";
 import Script from "next/script";
 
@@ -28,6 +29,11 @@ export const metadata: Metadata = {
     title: `${site.name} — ${site.role}`,
     description: site.tagline,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0f",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -56,6 +62,7 @@ export default function RootLayout({
           <Particles />
           <ScrollProgress />
           <CursorGlow />
+          <BackToTop />
           {children}
         </LanguageProvider>
       </body>
